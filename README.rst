@@ -2,11 +2,11 @@
 ======================================================
 
 Valhall v10 "CSF" support branch—for Mali G710/G610.
-## All credits - 
+# All credits - 
 `@icecream95 (Panfrost dev)`
 `@mesa Gpu driver development team`
 
-## Panfrost GPU driver credits without root
+# Panfrost GPU driver credits without root
 
 `@icecream95 (Panfrost dev)`
 
@@ -22,6 +22,6 @@ CFLAGS="-O3" meson -Dgallium-drivers=panfrost,swrast -Dvulkan-drivers= -Dbuildty
 
 ```
 
-## Note :- you must disable sys call with `--no-sysvipc` proot loging time..
+# Note :- you must disable sys call with `--no-sysvipc` proot loging time..
 
   
