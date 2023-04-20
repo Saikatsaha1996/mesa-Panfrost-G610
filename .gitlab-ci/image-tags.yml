@@ -1,0 +1,31 @@
+variables:
+   DEBIAN_X86_BUILD_BASE_IMAGE: "debian/x86_build-base"
+   DEBIAN_BASE_TAG: "2022-12-02-kernel-zram"
+
+   DEBIAN_X86_BUILD_IMAGE_PATH: "debian/x86_build"
+   DEBIAN_BUILD_TAG: "2022-11-03-ci-fairy-s3"
+
+   DEBIAN_X86_BUILD_MINGW_IMAGE_PATH: "debian/x86_build-mingw"
+   DEBIAN_BUILD_MINGW_TAG: "2022-10-18-dx-headers-va"
+
+   DEBIAN_X86_TEST_BASE_IMAGE: "debian/x86_test-base"
+
+   DEBIAN_X86_TEST_IMAGE_GL_PATH: "debian/x86_test-gl"
+   DEBIAN_X86_TEST_IMAGE_VK_PATH: "debian/x86_test-vk"
+   DEBIAN_X86_TEST_IMAGE_PATH: ${DEBIAN_X86_TEST_IMAGE_GL_PATH}
+
+   DEBIAN_X86_TEST_GL_TAG: "2022-11-17-weston"
+   DEBIAN_X86_TEST_VK_TAG: "2022-11-17-test-img-path"
+
+   ALPINE_X86_BUILD_TAG: "2022-11-28-disable-mold"
+   FEDORA_X86_BUILD_TAG: "2022-09-22-python3-ply-2"
+   KERNEL_ROOTFS_TAG: "2022-12-02-kernel-zram"
+
+   WINDOWS_X64_VS_PATH: "windows/x64_vs"
+   WINDOWS_X64_VS_TAG: "2022-10-20-upgrade-zlib"
+
+   WINDOWS_X64_BUILD_PATH: "windows/x64_build"
+   WINDOWS_X64_BUILD_TAG: "2022-10-18-wrap-nodownload-va"
+
+   WINDOWS_X64_TEST_PATH: "windows/x64_test"
+   WINDOWS_X64_TEST_TAG: "2022-11-03-agility-sdk"

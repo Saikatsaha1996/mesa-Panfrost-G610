@@ -1,0 +1,6 @@
+dEQP-VK.query_pool.concurrent_queries.primary_command_buffer
+.*multiple_interpolation.*
+dEQP-VK.draw.renderpass.indirect_draw.indexed_data_from_compute.indirect_draw_param_count_instanced.first_instance.triangle_strip
+
+dEQP-VK.draw.renderpass.indirect_draw.indexed_data_from_compute.indirect_draw.triangle_list
+dEQP-VK.draw.renderpass.indirect_draw.indexed_data_from_compute.indirect_draw_count_instanced.no_first_instance.triangle_list
