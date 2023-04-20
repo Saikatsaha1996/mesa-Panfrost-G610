@@ -54,6 +54,9 @@
 
 #include "pan_context.h"
 
+#include "pan_public.h"
+#include "frontend/sw_winsys.h"
+
 static const struct debug_named_value panfrost_debug_options[] = {
         {"perf",      PAN_DBG_PERF,     "Enable performance warnings"},
         {"trace",     PAN_DBG_TRACE | PAN_DBG_BO_CLEAR, "Trace the command stream"},
@@ -813,6 +816,43 @@ panfrost_get_driver_query_info(struct pipe_screen *pscreen, unsigned index,
         return 1;
 }
 
+static void
+panfrost_flush_frontbuffer(struct pipe_screen *_screen,
+                           struct pipe_context *pctx,
+                           struct pipe_resource *prsrc,
+                           unsigned level, unsigned layer,
+                           void *context_private, struct pipe_box *box)
+{
+        struct panfrost_resource *rsrc = pan_resource(prsrc);
+        struct panfrost_screen *screen = pan_screen(_screen);
+        struct sw_winsys *winsys = screen->sw_winsys;
+
+        assert(level == 0);
+
+        struct pipe_box my_box = {
+                .width = rsrc->base.width0,
+                .height = rsrc->base.height0,
+                .depth = 1,
+        };
+
+        assert(rsrc->dt);
+        uint8_t *map = winsys->displaytarget_map(winsys, rsrc->dt,
+                                                 PIPE_USAGE_DEFAULT);
+        assert(map);
+
+        struct pipe_transfer *trans = NULL;
+        uint8_t *tex_map = pctx->texture_map(pctx, prsrc, level,
+                                             PIPE_MAP_READ, &my_box, &trans);
+
+        for (unsigned row = 0; row < rsrc->base.height0; ++row)
+                memcpy(map + row * rsrc->dt_stride,
+                       tex_map + row * trans->stride,
+                       MIN2(rsrc->dt_stride, trans->stride));
+
+        pctx->texture_unmap(pctx, trans);
+
+        winsys->displaytarget_display(winsys, rsrc->dt, context_private, box);
+}
 
 struct pipe_screen *
 panfrost_create_screen(int fd, struct renderonly *ro)
@@ -867,6 +907,7 @@ panfrost_create_screen(int fd, struct renderonly *ro)
         screen->base.fence_finish = panfrost_fence_finish;
         screen->base.fence_get_fd = panfrost_fence_get_fd;
         screen->base.set_damage_region = panfrost_resource_set_damage_region;
+        screen->base.flush_frontbuffer = panfrost_flush_frontbuffer;
 
         panfrost_resource_screen_init(&screen->base);
         pan_blend_shaders_init(dev);
@@ -896,4 +937,20 @@ panfrost_create_screen(int fd, struct renderonly *ro)
                 unreachable("Unhandled architecture major");
 
         return &screen->base;
+}
+
+struct pipe_screen *
+panfrost_create_screen_sw(struct sw_winsys *winsys)
+{
+        int fd = drmOpenWithType("panfrost", NULL, DRM_NODE_RENDER);
+        if (fd < 0)
+                fd = open("/dev/mali0", O_RDWR | O_CLOEXEC | O_NONBLOCK);
+        if (fd < 0)
+                return NULL;
+
+        struct pipe_screen *scr = panfrost_create_screen(fd, NULL);
+
+        if (scr)
+                pan_screen(scr)->sw_winsys = winsys;
+        return scr;
 }

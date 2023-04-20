@@ -93,6 +93,9 @@ struct panfrost_resource {
 
         /* Cached min/max values for index buffers */
         struct panfrost_minmax_cache *index_cache;
+
+        struct sw_displaytarget *dt;
+        unsigned dt_stride;
 };
 
 static inline struct panfrost_resource *
