@@ -507,9 +507,9 @@ static struct kbase_op kbase_main[] = {
 #endif
 #if PAN_BASE_API >= 1
         { init_mem_exec, NULL, "Initialise EXEC_VA zone" },
-        { init_mem_jit, NULL, "Initialise JIT allocator" },
 #endif
 #if PAN_BASE_API >= 2
+        { init_mem_jit, NULL, "Initialise JIT allocator" },
         { alloc_event_mem, free_event_mem, "Allocate event memory" },
 #endif
 };
@@ -1817,7 +1817,6 @@ kbase_open_csf
         for (unsigned i = 0; i < ARRAY_SIZE(kbase_main); ++i) {
                 ++k->setup_state;
                 if (!kbase_main[i].part(k)) {
-                        k->close(k);
                         return false;
                 }
         }

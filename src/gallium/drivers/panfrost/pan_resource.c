@@ -30,12 +30,14 @@
  *
  */
 
+#include <stdbool.h>
 #include <xf86drm.h>
 #include <fcntl.h>
 #include "drm-uapi/drm_fourcc.h"
 #include "drm-uapi/drm.h"
 
 #include "frontend/winsys_handle.h"
+#include "frontend/sw_winsys.h"
 #include "util/format/u_format.h"
 #include "util/u_memory.h"
 #include "util/u_surface.h"
@@ -652,6 +654,20 @@ panfrost_resource_create_with_modifier(struct pipe_screen *screen,
         struct panfrost_resource *so = CALLOC_STRUCT(panfrost_resource);
         so->base = *template;
         so->base.screen = screen;
+
+        if (pan_screen(screen)->sw_winsys &&
+            (template->bind & PAN_BIND_SHARED_MASK)) {
+
+                so->dt = pan_screen(screen)->sw_winsys->displaytarget_create(
+                        pan_screen(screen)->sw_winsys,
+                        so->base.bind,
+                        so->base.format,
+                        so->base.width0,
+                        so->base.height0,
+                        64,
+                        NULL /*map_front_private*/,
+                        &so->dt_stride);
+        }
 
         pipe_reference_init(&so->base.reference, 1);
 

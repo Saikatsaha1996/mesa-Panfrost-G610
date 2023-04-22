@@ -30,9 +30,13 @@ extern "C" {
 
 struct pipe_screen;
 struct renderonly;
+struct sw_winsys;
 
 struct pipe_screen *
 panfrost_create_screen(int fd, struct renderonly *ro);
+
+struct pipe_screen *
+panfrost_create_screen_sw(struct sw_winsys *winsys);
 
 #ifdef __cplusplus
 }
