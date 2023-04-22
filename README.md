@@ -21,6 +21,9 @@ cd build
 
 CFLAGS="-O3" meson -Dgallium-drivers=panfrost,swrast -Dvulkan-drivers= -Dbuildtype=release -Dllvm=disabled -Dprefix=/usr
 
+ninja -j8
+
+ninja install
 ```
 
 # Note :- you must disable sys call with `--no-sysvipc` proot loging time..
