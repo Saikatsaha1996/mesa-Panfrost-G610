@@ -11,6 +11,10 @@ Valhall v10 "CSF" support branch—for Mali G710/G610.
 
 `@icecream95 (Panfrost dev)`
 
+`Mali G610 & 710 GPU driver Released for proot & Glibc`
+
+<https://github.com/Saikatsaha1996/mesa-Panfrost-G610/tree/mesa-23.0.0-devel-20240109_armhf_arm64>
+
 
 ```
 
