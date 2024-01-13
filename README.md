@@ -28,6 +28,7 @@ ninja -j8
 
 ninja install
 ```
+![Screenshot_2024-01-10-16-12-23-027_com termux x11](https://github.com/Saikatsaha1996/mesa-Panfrost-G610/assets/72664192/3e37849b-fca4-4046-b97e-9b592271cfe0)
 
 # Note :- you must disable sys call with `--no-sysvipc` proot loging time..
 
